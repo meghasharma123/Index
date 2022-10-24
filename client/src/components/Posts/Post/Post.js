@@ -5,9 +5,12 @@ import {MoreHoriz} from '@material-ui/icons';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { deletePost,likePost } from '../../../actions/post'
 
 const Post = ({ post ,setCurrentId}) =>{
     const classes = useStyle();
+    const dispatch = useDispatch();
     return(
         <Card className={classes.card}>
             <CardMedia className={classes.media} image={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} component='img' />
@@ -21,22 +24,21 @@ const Post = ({ post ,setCurrentId}) =>{
                 </Button>
             </div>
             <div className={classes.details}>
-                <Typography variant="body2" color="textSecondary">{post.tags.map((tag)=> `#${tag}`)}</Typography>
+                <Typography variant="body2" color="textSecondary">{post.tags.map((tag)=> `#${tag} `)}</Typography>
             </div>
             <Typography className={classes.title} variant="h5" gutterBottom>{post.title}</Typography>
             <CardContent>
-                <Typography variant="h5" gutterBottom>{post.message}</Typography>
+                <Typography variant="body2" color="textSecondary" component="p" gutterBottom>{post.message}</Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
-                <Button size="small" color="primary" onClick={()=>{}}>
+                <Button size="small" color="primary" onClick={()=>{dispatch(likePost(post._id))}}>
                     <ThumbUpAltIcon fontSize="small"/>
-                    Like
+                    &nbsp; Like &nbsp;
                     {post.likeCount}
                 </Button>
-                <Button size="small" color="primary" onClick={()=>{}}>
+                <Button size="small" color="primary" onClick={()=>{dispatch(deletePost(post._id))}}>
                     <DeleteIcon fontSize="small"/>
                     Delete
-                    {post.deleteCount}
                 </Button>
             </CardActions>
         </Card>
